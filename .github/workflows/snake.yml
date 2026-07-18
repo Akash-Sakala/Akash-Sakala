@@ -1,11 +1,18 @@
 # Generates the contribution "snake" animation and pushes it to the `output` branch.
-# File path in your repo MUST be:  .github/workflows/snake.yml
+# Repo path MUST be:  .github/workflows/snake.yml
+#
+# v2 fixes:
+#   - uses the faster svg-only action (fewer timeouts/failures)
+#   - uses the STOCK github-dark palette instead of custom near-black dot
+#     colours, which made the grid look empty on GitHub's dark background
+#   - explicit light + dark outputs so <picture> always resolves
+
 name: Generate Snake Animation
 
 on:
   schedule:
     - cron: "0 */12 * * *"   # refresh twice a day
-  workflow_dispatch:          # lets you run it manually from the Actions tab
+  workflow_dispatch:          # manual run from the Actions tab
   push:
     branches:
       - main
@@ -19,12 +26,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Generate snake SVGs
-        uses: Platane/snk@v3
+        uses: Platane/snk/svg-only@v3
+        id: snake
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=58A6FF&color_dots=161B22,0E4429,006D32,26A641,39D353
+            dist/github-contribution-grid-snake.svg?palette=github-light&color_snake=1F6FEB
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark&color_snake=58A6FF
 
       - name: Push to output branch
         uses: crazy-max/ghaction-github-pages@v4
