@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=800, height=560" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Mona Display"; src: url("assets/fonts/MonaSansDisplay-ExtraBold.woff2") format("woff2"); font-weight: 800; }
+      @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-SemiBold.woff2") format("woff2"); font-weight: 600; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 800px; height: 560px; overflow: hidden; background: #0a0e14; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Mona Sans", sans-serif; color: #e6edf3; }
+      #bg { position: absolute; inset: 0; background:
+          radial-gradient(420px 300px at 640px 330px, rgba(219,97,162,0.20), transparent 70%),
+          radial-gradient(360px 260px at 120px 520px, rgba(240,136,62,0.13), transparent 70%),
+          radial-gradient(1px 1px at 12px 12px, rgba(139,148,158,0.16) 1px, transparent 1.5px) 0 0 / 24px 24px, #0a0e14; }
+      #frame { position: absolute; inset: 12px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
+      .eyebrow { position: absolute; left: 40px; top: 34px; font-family: "IBM Plex Mono", monospace; font-size: 15px; letter-spacing: 0.12em; color: #f778ba; }
+      #title { position: absolute; left: 40px; top: 58px; font-family: "Mona Display", sans-serif; font-size: 46px; letter-spacing: -0.02em; line-height: 1; }
+      #status { position: absolute; left: 40px; top: 124px; height: 22px; width: 520px; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: #9198a1; }
+      .st { position: absolute; left: 0; top: 0; white-space: nowrap; }
+      .st b { color: #f0b37e; font-weight: 400; }
+      #st1, #st2 { opacity: 0; }
+      #len { position: absolute; right: 40px; top: 124px; font-family: "IBM Plex Mono", monospace; font-size: 15px; color: #9198a1; }
+      #strip { position: absolute; left: 40px; top: 152px; width: 720px; height: 56px; border-radius: 12px; background: rgba(22,27,34,0.9); border: 1px solid rgba(240,246,252,0.12); overflow: hidden; }
+      #stripsvg { position: absolute; left: 0; top: 0; width: 720px; height: 56px; }
+      #head { position: absolute; left: 0; top: -6px; width: 2px; height: 68px; background: #f0b37e; box-shadow: 0 0 12px #f0b37e; }
+      .win { position: absolute; top: 4px; height: 48px; border-radius: 8px; border: 2px solid #f778ba; background: rgba(219,97,162,0.18); }
+      .tag { position: absolute; top: 214px; font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: #f778ba; color: #1b0b14; }
+      .clip-card { position: absolute; top: 250px; width: 112px; height: 199px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(240,246,252,0.22); box-shadow: 0 18px 36px rgba(0,0,0,0.5); }
+      .clip-card .scene { position: absolute; inset: 0; }
+      .clip-card .person { position: absolute; left: 31px; top: 54px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.22); }
+      .clip-card .body { position: absolute; left: 18px; top: 108px; width: 76px; height: 70px; border-radius: 38px 38px 6px 6px; background: rgba(255,255,255,0.16); }
+      .clip-card .cap { position: absolute; left: 6px; right: 6px; bottom: 26px; text-align: center; font-family: "Mona Display", sans-serif; font-size: 13.5px; line-height: 1.15; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+      .clip-card .cap span { display: inline-block; margin: 0 2px; }
+      .clip-card .rk { position: absolute; left: 6px; top: 6px; font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600; padding: 1px 6px; border-radius: 5px; background: rgba(0,0,0,0.55); color: #fff; }
+      #score { position: absolute; left: 470px; top: 252px; width: 290px; }
+      #score .hd { display: flex; align-items: baseline; justify-content: space-between; }
+      #score .hd span { font-size: 17px; color: #c9d1d9; font-weight: 600; }
+      #score .hd b { font-family: "Mona Display", sans-serif; font-size: 34px; color: #f778ba; }
+      .row { margin-top: 9px; }
+      .row .lb { font-family: "IBM Plex Mono", monospace; font-size: 14px; color: #9198a1; }
+      .row .tr { margin-top: 4px; height: 7px; border-radius: 4px; background: rgba(240,246,252,0.08); overflow: hidden; }
+      .row .fl { height: 7px; border-radius: 4px; background: linear-gradient(90deg, #f0883e, #f778ba); transform-origin: 0 50%; }
+      #metric { position: absolute; left: 40px; top: 466px; font-size: 19px; color: #c9d1d9; }
+      #metric b { color: #fff; font-weight: 600; }
+      #stack { position: absolute; left: 40px; top: 500px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="800" data-height="560">
+      <div id="stage" class="clip" data-start="0" data-duration="8" data-track-index="0" style="position:absolute;inset:0" data-layout-allow-overlap data-layout-allow-overflow>
+        <div id="bg"></div>
+        <div id="frame"></div>
+        <div class="eyebrow">02 · AI VIDEO PIPELINE</div>
+        <div id="title">AI Podcast Clipper</div>
+        <div id="status">
+          <div class="st" id="st0"><b>①</b> Parakeet · transcribing on a Modal GPU…</div>
+          <div class="st" id="st1"><b>②</b> Gemini · ranking the strongest moments…</div>
+          <div class="st" id="st2"><b>③</b> rendering 9:16 clips in parallel ✓</div>
+        </div>
+        <div id="len">podcast · 37:12</div>
+        <div id="strip">
+          <svg id="stripsvg" viewBox="0 0 720 56"><g id="bars"></g></svg>
+          <div class="win" id="w1" style="left:340px;width:74px"></div>
+          <div class="win" id="w2" style="left:104px;width:62px"></div>
+          <div class="win" id="w3" style="left:560px;width:68px"></div>
+          <div id="head"></div>
+        </div>
+        <div class="tag" id="t1" style="left:384px">#1</div>
+        <div class="tag" id="t2" style="left:142px">#2</div>
+        <div class="tag" id="t3" style="left:600px">#3</div>
+
+        <div class="clip-card" id="c1" style="left:40px">
+          <div class="scene" style="background:radial-gradient(120px 160px at 56px 80px,#6e40c9,#1b1f4b)"></div>
+          <div class="person"></div><div class="body"></div>
+          <div class="rk">#1 · 86</div>
+          <div class="cap"><span>BEST</span> <span>MOMENT</span><br /><span>FIRST</span></div>
+        </div>
+        <div class="clip-card" id="c2" style="left:182px">
+          <div class="scene" style="background:radial-gradient(120px 160px at 56px 80px,#bf4b8a,#3a1430)"></div>
+          <div class="person"></div><div class="body"></div>
+          <div class="rk">#2</div>
+          <div class="cap"><span>CROPPED</span> <span>TO</span><br /><span>SPEAKER</span></div>
+        </div>
+        <div class="clip-card" id="c3" style="left:324px">
+          <div class="scene" style="background:radial-gradient(120px 160px at 56px 80px,#d18616,#3b2410)"></div>
+          <div class="person"></div><div class="body"></div>
+          <div class="rk">#3</div>
+          <div class="cap"><span>WORD-TIMED</span><br /><span>SUBTITLES</span></div>
+        </div>
+
+        <div id="score">
+          <div class="hd"><span>Why #1 ranked first</span><b>86</b></div>
+          <div class="row"><div class="lb">hook</div><div class="tr"><div class="fl" id="f0"></div></div></div>
+          <div class="row"><div class="lb">payoff</div><div class="tr"><div class="fl" id="f1"></div></div></div>
+          <div class="row"><div class="lb">emotion</div><div class="tr"><div class="fl" id="f2"></div></div></div>
+          <div class="row"><div class="lb">shareability</div><div class="tr"><div class="fl" id="f3"></div></div></div>
+        </div>
+
+        <div id="metric">37-min podcast → <b>5 ranked clips in 7 min</b> for ~$0.12 of GPU</div>
+        <div id="stack">Parakeet TDT · Gemini · LR-ASD · Modal · Next.js</div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const NS = "http://www.w3.org/2000/svg";
+        const g = document.getElementById("bars"); const bars = [];
+        let a = 7; const rnd = () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+        for (let i = 0; i < 90; i++) {
+          const h = 8 + 34 * (0.35 + 0.65 * Math.abs(Math.sin(i * 0.37) * Math.sin(i * 0.11 + 1))) * (0.6 + 0.4 * rnd());
+          const r = document.createElementNS(NS, "rect");
+          r.setAttribute("x", 6 + i * 7.9); r.setAttribute("y", 28 - h / 2); r.setAttribute("width", 4); r.setAttribute("height", h); r.setAttribute("rx", 2);
+          r.setAttribute("fill", "#3d444d"); g.appendChild(r); bars.push(r);
+        }
+        const tl = gsap.timeline({ paused: true });
+        const head = document.getElementById("head");
+
+        tl.fromTo("#st0", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 0.1);
+        tl.fromTo(head, { x: 0, opacity: 1 }, { x: 718, duration: 1.7, ease: "none" }, 0.25);
+        bars.forEach((r) => {
+          const x = parseFloat(r.getAttribute("x"));
+          tl.fromTo(r, { attr: { fill: "#3d444d" } }, { attr: { fill: "#f0b37e" }, duration: 0.08, ease: "none", immediateRender: false }, 0.25 + 1.7 * x / 718);
+        });
+        tl.to(head, { opacity: 0, duration: 0.15 }, 1.95);
+        // 2) rank: windows + tags
+        tl.to("#st0", { opacity: 0, filter: "blur(6px)", duration: 0.15, ease: "power2.in" }, 2.0);
+        tl.fromTo("#st1", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 2.1);
+        ["#w2", "#w1", "#w3"].forEach((w, i) => tl.fromTo(w, { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1, duration: 0.35, ease: "expo.out" }, 2.2 + i * 0.18));
+        ["#t1", "#t2", "#t3"].forEach((t, i) => tl.fromTo(t, { opacity: 0, y: -8 }, { opacity: 1, y: 0, duration: 0.3, ease: "back.out(1.6)" }, 2.75 + i * 0.12));
+        // 3) clips fly out of their windows into the row
+        tl.to("#st1", { opacity: 0, filter: "blur(6px)", duration: 0.15, ease: "power2.in" }, 3.25);
+        tl.fromTo("#st2", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 3.35);
+        [["#c1", 321], ["#c2", -63], ["#c3", 254]].forEach(([c, dx], i) => {
+          tl.fromTo(c, { opacity: 0, x: dx, y: -170, scale: 0.3 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }, 3.3 + i * 0.12);
+        });
+        // word-timed subtitles: each word lights in turn
+        ["#c1", "#c2", "#c3"].forEach((c, ci) => {
+          const words = document.querySelectorAll(c + " .cap span");
+          tl.set(words, { color: "#ffffff" }, 0);
+          words.forEach((w, wi) => {
+            const t0 = 4.0 + ci * 0.15 + wi * 0.42;
+            tl.to(w, { color: "#ffd33d", scale: 1.08, duration: 0.08, ease: "power2.out" }, t0);
+            tl.to(w, { color: "#ffffff", scale: 1, duration: 0.12, ease: "power2.in" }, t0 + 0.38);
+          });
+        });
+        // score bars for #1
+        [0.92, 0.84, 0.78, 0.88].forEach((v, i) => tl.fromTo("#f" + i, { scaleX: 0 }, { scaleX: v, duration: 0.7, ease: "expo.out" }, 3.7 + i * 0.1));
+        tl.fromTo("#score", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 3.55);
+        // reset for a seamless loop
+        tl.to(["#c1", "#c2", "#c3", "#score", ".win", ".tag", "#st2"], { opacity: 0, filter: "blur(6px)", duration: 0.25, ease: "power2.in", stagger: 0.02 }, 7.3);
+        tl.to(bars, { attr: { fill: "#3d444d" }, duration: 0.35, ease: "power2.inOut" }, 7.45);
+        tl.set([".win", ".tag", "#c1", "#c2", "#c3", "#score"], { filter: "blur(0px)" }, 7.99);
+        window.__timelines["main"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </body>
+</html>
