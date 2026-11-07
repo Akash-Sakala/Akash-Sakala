@@ -2,34 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=800, height=560" />
+    <meta name="viewport" content="width=1280, height=540" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
       @font-face { font-family: "Mona Display"; src: url("assets/fonts/MonaSansDisplay-ExtraBold.woff2") format("woff2"); font-weight: 800; }
       @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-Medium.woff2") format("woff2"); font-weight: 500; }
       @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-SemiBold.woff2") format("woff2"); font-weight: 600; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 800px; height: 560px; overflow: hidden; background: #0a0e14; }
+      html, body { width: 1280px; height: 540px; overflow: hidden; background: #0a0e14; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Mona Sans", sans-serif; color: #e6edf3; }
       #bg { position: absolute; inset: 0; background:
-          radial-gradient(420px 300px at 420px 300px, rgba(57,197,207,0.16), transparent 70%),
-          radial-gradient(360px 240px at 700px 520px, rgba(31,111,235,0.14), transparent 70%),
+          radial-gradient(560px 360px at 900px 280px, rgba(57,197,207,0.16), transparent 70%),
+          radial-gradient(420px 300px at 180px 480px, rgba(31,111,235,0.14), transparent 70%),
           radial-gradient(1px 1px at 12px 12px, rgba(139,148,158,0.16) 1px, transparent 1.5px) 0 0 / 24px 24px, #0a0e14; }
-      #frame { position: absolute; inset: 12px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
-      .eyebrow { position: absolute; left: 40px; top: 34px; font-family: "IBM Plex Mono", monospace; font-size: 15px; letter-spacing: 0.12em; color: #56d4dd; }
-      #title { position: absolute; left: 40px; top: 58px; font-family: "Mona Display", sans-serif; font-size: 46px; letter-spacing: -0.02em; line-height: 1; }
-      #sub { position: absolute; left: 40px; top: 116px; font-size: 19px; color: #c9d1d9; }
+      #frame { position: absolute; inset: 14px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
+      #left { position: absolute; left: 48px; top: 46px; width: 470px; }
+      .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 14px; letter-spacing: 0.12em; color: #56d4dd; }
+      #title { margin-top: 10px; font-family: "Mona Display", sans-serif; font-size: 56px; letter-spacing: -0.02em; line-height: 1; }
+      #sub { margin-top: 12px; font-size: 22px; color: #c9d1d9; line-height: 1.3; }
+      #facts { margin-top: 22px; display: flex; flex-direction: column; gap: 6px; }
+      .ft { display: flex; align-items: center; gap: 12px; padding: 7px 12px; border-radius: 12px; border: 1px solid rgba(86,212,221,0.18); background: rgba(57,197,207,0.05); font-size: 18px; color: #c9d1d9; }
+      .ft .ic { width: 30px; height: 30px; flex: none; border-radius: 8px; display: grid; place-items: center; background: rgba(240,246,252,0.06); font-size: 16px; }
+      .ft b { font-weight: 600; color: #e6edf3; }
       .cap { position: absolute; font-family: "IBM Plex Mono", monospace; font-size: 14px; color: #9198a1; }
-      #specbox { position: absolute; left: 40px; top: 172px; width: 230px; height: 212px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(240,246,252,0.14); background: #05070b; }
-      #spec { width: 230px; height: 212px; display: block; }
-      #net { position: absolute; left: 292px; top: 172px; width: 236px; height: 212px; }
-      .stage { position: absolute; top: 0; width: 46px; height: 212px; }
+      #specbox { position: absolute; left: 560px; top: 90px; width: 280px; height: 330px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(240,246,252,0.14); background: #05070b; }
+      #spec { width: 280px; height: 330px; display: block; }
+      #net { position: absolute; left: 866px; top: 90px; width: 200px; height: 330px; }
+      .stage { position: absolute; top: 0; width: 46px; height: 330px; }
       .blk { position: absolute; left: 4px; width: 38px; border-radius: 5px; border: 1px solid rgba(86,212,221,0.35); background: rgba(86,212,221,0.06); }
-      .fm { position: absolute; left: 3px; width: 40px; height: 40px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(240,246,252,0.2); }
-      .fm canvas { width: 40px; height: 40px; display: block; }
-      #preds { position: absolute; left: 552px; top: 172px; width: 208px; }
-      .pr { position: absolute; left: 0; width: 208px; }
-      .pr .nm { font-family: "IBM Plex Mono", monospace; font-size: 15.5px; color: #9198a1; }
+      .fm { position: absolute; left: 0px; width: 46px; height: 46px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(240,246,252,0.2); }
+      .fm canvas { width: 46px; height: 46px; display: block; }
+      #preds { position: absolute; left: 1086px; top: 90px; width: 154px; }
+      .pr { position: absolute; left: 0; width: 154px; }
+      .pr .nm { font-family: "IBM Plex Mono", monospace; font-size: 15px; color: #9198a1; }
       .pr .tr { margin-top: 5px; height: 8px; border-radius: 4px; background: rgba(240,246,252,0.08); overflow: hidden; }
       .pr .fl { height: 8px; border-radius: 4px; background: #3d6b73; transform-origin: 0 50%; }
       #preds .nm { opacity: 0; }
@@ -37,42 +42,49 @@
       .fm { opacity: 0.25; }
       .pr.top .nm { color: #e6edf3; font-weight: 600; }
       .pr.top .fl { background: linear-gradient(90deg, #39c5cf, #58a6ff); }
-      #metric { position: absolute; left: 40px; top: 420px; display: flex; align-items: baseline; gap: 14px; }
+      #metric { position: absolute; left: 48px; top: 446px; display: flex; align-items: baseline; gap: 14px; }
       #metric .big { font-family: "Mona Display", sans-serif; font-size: 44px; color: #56d4dd; letter-spacing: -0.02em; }
-      #metric .c { font-size: 18px; color: #c9d1d9; line-height: 1.3; }
+      #metric .c { font-size: 16px; color: #9198a1; line-height: 1.3; }
       #metric .c b { color: #fff; font-weight: 600; }
-      #stack { position: absolute; left: 40px; top: 498px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
+      #stack { position: absolute; left: 48px; top: 412px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="800" data-height="560">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1280" data-height="540">
       <div id="stage" class="clip" data-start="0" data-duration="8" data-track-index="0" style="position:absolute;inset:0" data-layout-allow-overlap data-layout-allow-overflow>
         <div id="bg"></div>
         <div id="frame"></div>
-        <div class="eyebrow">03 · AUDIO ML</div>
-        <div id="title">Audio CNN</div>
-        <div id="sub">A ResNet-34 that listens to 50 everyday sounds</div>
-        <div class="cap" style="left:40px;top:148px">log-mel spectrogram</div>
-        <div class="cap" style="left:292px;top:148px">ResNet-34 · feature maps</div>
-        <div class="cap" style="left:552px;top:148px">top predictions</div>
-        <div id="specbox"><canvas id="spec" width="230" height="212"></canvas></div>
+        <div id="left">
+          <div class="eyebrow">03 · AUDIO ML</div>
+          <div id="title">Audio CNN</div>
+          <div id="sub">A ResNet-34 for 50 everyday sounds</div>
+          <div id="facts">
+            <div class="ft"><div class="ic">🧠</div><span><b>83.0% → 91.3%</b> via ImageNet transfer + EMA</span></div>
+            <div class="ft"><div class="ic">⚡</div><span><b>48 → 2.2 min</b> training on one A10G</span></div>
+            <div class="ft"><div class="ic">💻</div><span><b>Offline on CPU</b>, ~57 ms per clip</span></div>
+          </div>
+        </div>
+        <div class="cap" style="left:560px;top:62px">log-mel spectrogram</div>
+        <div class="cap" style="left:866px;top:62px">ResNet-34 stages</div>
+        <div class="cap" style="left:1086px;top:62px">top predictions</div>
+        <div id="specbox"><canvas id="spec" width="280" height="330"></canvas></div>
         <div id="net"></div>
         <div id="preds">
           <div class="grp" id="gA">
             <div class="pr top" style="top:0"><div class="nm">dog</div><div class="tr"><div class="fl a"></div></div></div>
-            <div class="pr" style="top:52px"><div class="nm">rooster</div><div class="tr"><div class="fl a"></div></div></div>
-            <div class="pr" style="top:104px"><div class="nm">crow</div><div class="tr"><div class="fl a"></div></div></div>
-            <div class="pr" style="top:156px"><div class="nm">siren</div><div class="tr"><div class="fl a"></div></div></div>
+            <div class="pr" style="top:70px"><div class="nm">rooster</div><div class="tr"><div class="fl a"></div></div></div>
+            <div class="pr" style="top:140px"><div class="nm">crow</div><div class="tr"><div class="fl a"></div></div></div>
+            <div class="pr" style="top:210px"><div class="nm">siren</div><div class="tr"><div class="fl a"></div></div></div>
           </div>
           <div class="grp" id="gB">
             <div class="pr top" style="top:0"><div class="nm">rain</div><div class="tr"><div class="fl b"></div></div></div>
-            <div class="pr" style="top:52px"><div class="nm">sea_waves</div><div class="tr"><div class="fl b"></div></div></div>
-            <div class="pr" style="top:104px"><div class="nm">crackling_fire</div><div class="tr"><div class="fl b"></div></div></div>
-            <div class="pr" style="top:156px"><div class="nm">wind</div><div class="tr"><div class="fl b"></div></div></div>
+            <div class="pr" style="top:70px"><div class="nm">sea_waves</div><div class="tr"><div class="fl b"></div></div></div>
+            <div class="pr" style="top:140px"><div class="nm">crackling_fire</div><div class="tr"><div class="fl b"></div></div></div>
+            <div class="pr" style="top:210px"><div class="nm">wind</div><div class="tr"><div class="fl b"></div></div></div>
           </div>
         </div>
         <div id="metric"><div class="big">91.3% ± 1.3</div><div class="c">accuracy on ESC-50 (5-fold CV)<br />human listeners score <b>81.3%</b></div></div>
-        <div id="stack">PyTorch · Modal A10G (2.2-min training) · FastAPI · Next.js</div>
+        <div id="stack">PyTorch · Modal A10G · FastAPI · Next.js</div>
       </div>
     </div>
     <script>
@@ -80,9 +92,9 @@
         const SPEED = 30, P = 8 * SPEED; // columns per second; pattern repeats every 8 s
         const h32 = (x) => { x |= 0; x = Math.imul(x ^ (x >>> 16), 0x45d9f3b); x = Math.imul(x ^ (x >>> 16), 0x45d9f3b); return ((x ^ (x >>> 16)) >>> 0) / 4294967296; };
         const cv = document.getElementById("spec"), ctx = cv.getContext("2d");
-        const W = 230, H = 212, CW = 2, ROWS = 53, RH = H / ROWS;
+        const W = 280, H = 330, CW = 2, ROWS = 66, RH = H / ROWS;
         function energy(col, row) {
-          const cc = col - 115, c = ((cc % P) + P) % P, sec = c / SPEED, f = 1 - row / ROWS; // f: 0 low .. 1 high
+          const cc = col - 140, c = ((cc % P) + P) % P, sec = c / SPEED, f = 1 - row / ROWS; // f: 0 low .. 1 high
           let e;
           if (sec < 4) { // dog: harmonic bark bursts
             const ph = (sec % 0.9) / 0.9, burst = ph < 0.28 ? Math.sin(Math.PI * ph / 0.28) : 0;
@@ -110,20 +122,20 @@
         const net = document.getElementById("net"), CNT = [3, 4, 6, 3], CH = [64, 128, 256, 512];
         const fms = [];
         CNT.forEach((n, si) => {
-          const st = document.createElement("div"); st.className = "stage"; st.style.left = si * 62 + "px"; net.appendChild(st);
-          const bh = (150 - (n - 1) * 4) / n;
+          const st = document.createElement("div"); st.className = "stage"; st.style.left = si * 52 + "px"; net.appendChild(st);
+          const bh = (236 - (n - 1) * 4) / n;
           for (let b = 0; b < n; b++) { const d = document.createElement("div"); d.className = "blk s" + si; d.style.top = b * (bh + 4) + "px"; d.style.height = bh + "px"; st.appendChild(d); }
-          const fm = document.createElement("div"); fm.className = "fm f" + si; fm.style.top = "160px";
-          const c = document.createElement("canvas"); c.width = 40; c.height = 40; fm.appendChild(c); st.appendChild(fm); fms.push(c.getContext("2d"));
-          const lb = document.createElement("div"); lb.className = "cap"; lb.style.cssText = "left:2px;top:204px;font-size:12px;opacity:0"; lb.textContent = CH[si]; st.appendChild(lb);
+          const fm = document.createElement("div"); fm.className = "fm f" + si; fm.style.top = "250px";
+          const c = document.createElement("canvas"); c.width = 46; c.height = 46; fm.appendChild(c); st.appendChild(fm); fms.push(c.getContext("2d"));
+          const lb = document.createElement("div"); lb.className = "cap"; lb.style.cssText = "left:2px;top:304px;font-size:13px;opacity:0"; lb.textContent = CH[si]; st.appendChild(lb);
         });
         function drawFM(t) { // feature maps: coarser and more abstract each stage, driven by the current sound
           const off = Math.floor(t * SPEED);
           fms.forEach((g, si) => {
-            const cells = [16, 10, 6, 4][si], s = 40 / cells;
+            const cells = [16, 10, 6, 4][si], s = 46 / cells;
             for (let y = 0; y < cells; y++) for (let x = 0; x < cells; x++) {
               let v = 0; const span = 4 << si;
-              for (let k = 0; k < 3; k++) v += energy(off + Math.floor(x * span / cells * 3) + k, Math.floor(y * 53 / cells));
+              for (let k = 0; k < 3; k++) v += energy(off + Math.floor(x * span / cells * 3) + k, Math.floor(y * ROWS / cells));
               v = Math.min(1, v / 3 * (1.1 + 0.25 * si));
               const hue = 190 - 160 * v;
               g.fillStyle = `hsl(${hue},80%,${12 + 48 * v}%)`; g.fillRect(x * s, y * s, s + 0.5, s + 0.5);
