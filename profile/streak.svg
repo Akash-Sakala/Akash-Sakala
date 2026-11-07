@@ -8,7 +8,7 @@
 <rect width="495" height="195" rx="6" fill="#0D1117"/>
 <line x1="165" y1="28" x2="165" y2="170" stroke="#30363D"/>
 <line x1="330" y1="28" x2="330" y2="170" stroke="#30363D"/>
-<text class="n" x="82.5" y="88" text-anchor="middle">177</text>
+<text class="n" x="82.5" y="88" text-anchor="middle">183</text>
 <text class="l" x="82.5" y="122" text-anchor="middle">Total Contributions</text>
 <text class="d" x="82.5" y="146" text-anchor="middle">May 4, 2025 – Present</text>
 <circle cx="247.5" cy="72" r="40" fill="none" stroke="#30363D" stroke-width="5"/>
@@ -16,7 +16,7 @@
   stroke-dasharray="83.8 251.3" transform="rotate(-90 247.5 72)"/>
 <text class="n" x="247.5" y="82" text-anchor="middle">1</text>
 <text class="l a" x="247.5" y="136" text-anchor="middle">Current Streak</text>
-<text class="d" x="247.5" y="158" text-anchor="middle">Nov 7 – Nov 7</text>
+<text class="d" x="247.5" y="158" text-anchor="middle">Nov 7</text>
 <text class="n" x="412.5" y="88" text-anchor="middle">3</text>
 <text class="l" x="412.5" y="122" text-anchor="middle">Longest Streak</text>
 <text class="d" x="412.5" y="146" text-anchor="middle">Nov 28, 2025 – Nov 30, 2025</text>
