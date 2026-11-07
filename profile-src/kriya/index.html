@@ -2,70 +2,84 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=800, height=560" />
+    <meta name="viewport" content="width=1280, height=540" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
       @font-face { font-family: "Mona Display"; src: url("assets/fonts/MonaSansDisplay-ExtraBold.woff2") format("woff2"); font-weight: 800; }
       @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-Medium.woff2") format("woff2"); font-weight: 500; }
       @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-SemiBold.woff2") format("woff2"); font-weight: 600; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
-      html, body { width: 800px; height: 560px; overflow: hidden; background: #0a0e14; }
+      html, body { width: 1280px; height: 540px; overflow: hidden; background: #0a0e14; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Mona Sans", sans-serif; color: #e6edf3; }
       #bg { position: absolute; inset: 0; background:
-          radial-gradient(440px 300px at 420px 320px, rgba(163,113,247,0.18), transparent 70%),
-          radial-gradient(340px 240px at 120px 520px, rgba(63,185,80,0.12), transparent 70%),
+          radial-gradient(560px 360px at 900px 300px, rgba(163,113,247,0.18), transparent 70%),
+          radial-gradient(420px 300px at 180px 480px, rgba(63,185,80,0.12), transparent 70%),
           radial-gradient(1px 1px at 12px 12px, rgba(139,148,158,0.16) 1px, transparent 1.5px) 0 0 / 24px 24px, #0a0e14; }
-      #frame { position: absolute; inset: 12px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
-      .eyebrow { position: absolute; left: 40px; top: 34px; font-family: "IBM Plex Mono", monospace; font-size: 15px; letter-spacing: 0.12em; color: #d2a8ff; }
-      #title { position: absolute; left: 40px; top: 58px; font-family: "Mona Display", sans-serif; font-size: 46px; letter-spacing: -0.02em; line-height: 1; }
-      #sub { position: absolute; left: 40px; top: 116px; font-size: 19px; color: #c9d1d9; }
-      #term { position: absolute; left: 40px; top: 158px; width: 720px; height: 46px; border-radius: 10px; background: #0d1117; border: 1px solid rgba(240,246,252,0.14); font-family: "IBM Plex Mono", monospace; font-size: 17px; line-height: 44px; padding-left: 16px; color: #e6edf3; white-space: nowrap; overflow: hidden; }
+      #frame { position: absolute; inset: 14px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
+      #left { position: absolute; left: 48px; top: 46px; width: 470px; }
+      .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 14px; letter-spacing: 0.12em; color: #d2a8ff; }
+      #title { margin-top: 10px; font-family: "Mona Display", sans-serif; font-size: 56px; letter-spacing: -0.02em; line-height: 1; }
+      #sub { margin-top: 12px; font-size: 22px; color: #c9d1d9; line-height: 1.3; }
+      #facts { margin-top: 22px; display: flex; flex-direction: column; gap: 6px; }
+      .ft { display: flex; align-items: center; gap: 12px; padding: 7px 12px; border-radius: 12px; border: 1px solid rgba(210,168,255,0.18); background: rgba(137,87,229,0.06); font-size: 18px; color: #c9d1d9; }
+      .ft .ic { width: 30px; height: 30px; flex: none; border-radius: 8px; display: grid; place-items: center; background: rgba(240,246,252,0.06); font-size: 16px; }
+      .ft b { font-weight: 600; color: #e6edf3; }
+      #metric { position: absolute; left: 48px; top: 446px; display: flex; align-items: baseline; gap: 14px; }
+      #metric .big { font-family: "Mona Display", sans-serif; font-size: 44px; color: #d2a8ff; letter-spacing: -0.02em; }
+      #metric .cap { font-size: 16px; color: #9198a1; line-height: 1.3; width: 300px; }
+      #term { position: absolute; left: 560px; top: 76px; width: 680px; height: 50px; border-radius: 10px; background: #0d1117; border: 1px solid rgba(240,246,252,0.14); font-family: "IBM Plex Mono", monospace; font-size: 17px; line-height: 48px; padding-left: 16px; color: #e6edf3; white-space: nowrap; overflow: hidden; }
       #term .pr { color: #7ee787; }
       #typed { display: inline-block; overflow: hidden; vertical-align: top; white-space: nowrap; }
       #caret { display: inline-block; width: 9px; height: 20px; background: #d2a8ff; vertical-align: middle; margin-left: 2px; }
-      #flow { position: absolute; left: 40px; top: 238px; width: 720px; height: 170px; }
-      .ag { position: absolute; top: 34px; width: 124px; height: 84px; border-radius: 14px; border: 1px solid rgba(210,168,255,0.28); background: rgba(22,27,34,0.85); text-align: center; }
-      .ag .ic { margin-top: 12px; font-size: 24px; }
-      .ag .nm { margin-top: 4px; font-size: 16.5px; font-weight: 600; color: #9198a1; }
+      #flow { position: absolute; left: 560px; top: 158px; width: 680px; height: 220px; }
+      .ag { position: absolute; top: 40px; width: 120px; height: 96px; border-radius: 14px; border: 1px solid rgba(210,168,255,0.28); background: rgba(22,27,34,0.85); text-align: center; }
+      .ag .ic { margin-top: 16px; font-size: 26px; }
+      .ag .nm { margin-top: 6px; font-size: 17px; font-weight: 600; color: #9198a1; }
       .ag .badge { position: absolute; right: -8px; top: -10px; font-family: "IBM Plex Mono", monospace; font-size: 13px; font-weight: 600; padding: 2px 7px; border-radius: 999px; opacity: 0; }
-      svg#links { position: absolute; left: 0; top: 0; width: 720px; height: 170px; overflow: visible; }
+      svg#links { position: absolute; left: 0; top: 0; width: 680px; height: 220px; overflow: visible; }
       #loop, #looplbl, #out { opacity: 0; }
-      #out { position: absolute; left: 40px; top: 424px; font-family: "IBM Plex Mono", monospace; font-size: 17px; color: #7ee787; }
-      #stack { position: absolute; left: 40px; top: 498px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
-      #note { position: absolute; left: 40px; top: 458px; font-size: 17px; color: #c9d1d9; }
+      #out { position: absolute; left: 560px; top: 410px; font-family: "IBM Plex Mono", monospace; font-size: 18px; color: #7ee787; }
+      #stack { position: absolute; left: 48px; top: 412px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="800" data-height="560">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1280" data-height="540">
       <div id="stage" class="clip" data-start="0" data-duration="8" data-track-index="0" style="position:absolute;inset:0" data-layout-allow-overlap data-layout-allow-overflow>
         <div id="bg"></div>
         <div id="frame"></div>
-        <div class="eyebrow">04 · AGENTIC AI</div>
-        <div id="title">Kriya AI</div>
-        <div id="sub">Five LangGraph agents turn a prompt into a working app</div>
+        <div id="left">
+          <div class="eyebrow">04 · AGENTIC AI</div>
+          <div id="title">Kriya AI</div>
+          <div id="sub">Prompt in, working app out</div>
+          <div id="facts">
+            <div class="ft"><div class="ic">✅</div><span><b>Human-approved plan</b> before any code</span></div>
+            <div class="ft"><div class="ic">🔁</div><span><b>Self-healing</b> test → debug loop</span></div>
+            <div class="ft"><div class="ic">💾</div><span><b>Model fallback</b> + checkpoint/resume</span></div>
+          </div>
+        </div>
         <div id="term"><span class="pr">$ kriya</span> "<span id="typed">build a colourful todo app in html, css and js</span>"<span id="caret"></span></div>
         <div id="flow">
-          <svg id="links" viewBox="0 0 720 170">
+          <svg id="links" viewBox="0 0 680 220">
             <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6e7681" /></marker>
               <marker id="ahp" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#f778ba" /></marker></defs>
             <g stroke="#3d444d" stroke-width="2" fill="none">
-              <line x1="126" y1="76" x2="146" y2="76" marker-end="url(#ah)" />
-              <line x1="274" y1="76" x2="294" y2="76" marker-end="url(#ah)" />
-              <line x1="422" y1="76" x2="442" y2="76" marker-end="url(#ah)" />
-              <line x1="570" y1="76" x2="590" y2="76" marker-end="url(#ah)" />
+              <line x1="122" y1="88" x2="136" y2="88" marker-end="url(#ah)" />
+              <line x1="262" y1="88" x2="276" y2="88" marker-end="url(#ah)" />
+              <line x1="402" y1="88" x2="416" y2="88" marker-end="url(#ah)" />
+              <line x1="542" y1="88" x2="556" y2="88" marker-end="url(#ah)" />
             </g>
-            <path id="loop" d="M 656 120 C 656 165, 508 165, 508 124" fill="none" stroke="#f778ba" stroke-width="2.5" marker-end="url(#ahp)" />
-            <text id="looplbl" x="582" y="166" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#f778ba">patch &amp; re-test</text>
+            <path id="loop" d="M 620 140 C 620 196, 480 196, 480 146" fill="none" stroke="#f778ba" stroke-width="2.5" marker-end="url(#ahp)" />
+            <text id="looplbl" x="550" y="212" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#f778ba">patch &amp; re-test</text>
           </svg>
           <div class="ag" id="a0" style="left:0"><div class="ic">🧭</div><div class="nm">Planner</div><div class="badge" style="background:#7ee787;color:#04260f">plan ✓</div></div>
-          <div class="ag" id="a1" style="left:148px"><div class="ic">📐</div><div class="nm">Architect</div></div>
-          <div class="ag" id="a2" style="left:296px"><div class="ic">⌨</div><div class="nm">Coder</div></div>
-          <div class="ag" id="a3" style="left:444px"><div class="ic">🧪</div><div class="nm">Tester</div><div class="badge" id="fail" style="background:#b62324;color:#fff">2 failing</div><div class="badge" id="pass" style="background:#3fb950;color:#04260f">all pass</div></div>
-          <div class="ag" id="a4" style="left:592px"><div class="ic">🛠</div><div class="nm">Debugger</div></div>
+          <div class="ag" id="a1" style="left:140px"><div class="ic">📐</div><div class="nm">Architect</div></div>
+          <div class="ag" id="a2" style="left:280px"><div class="ic">⌨</div><div class="nm">Coder</div></div>
+          <div class="ag" id="a3" style="left:420px"><div class="ic">🧪</div><div class="nm">Tester</div><div class="badge" id="fail" style="background:#b62324;color:#fff">2 failing</div><div class="badge" id="pass" style="background:#3fb950;color:#04260f">all pass</div></div>
+          <div class="ag" id="a4" style="left:560px"><div class="ic">🛠</div><div class="nm">Debugger</div></div>
         </div>
         <div id="out">✓ app ready → output/colourful-todo-app/</div>
-        <div id="note">Human-approved plan · sandboxed tools · resume after a crash</div>
-        <div id="stack">LangGraph · Groq gpt-oss-120b · ReAct tools · SQLite checkpoints</div>
+        <div id="stack">LangGraph · Groq gpt-oss-120b · ReAct tools · SQLite</div>
+        <div id="metric"><div class="big">5 agents</div><div class="cap">plan → design → code → test → debug, in one CLI</div></div>
       </div>
     </div>
     <script>
@@ -88,7 +102,7 @@
       lightUp("#a2", 2.3, 0.6);
       lightUp("#a3", 2.85, 0.5); tl.fromTo("#fail", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.25, ease: "back.out(1.6)" }, 3.05);
       lightUp("#a4", 3.45, 0.55);
-      tl.fromTo("#loop", { strokeDasharray: 230, strokeDashoffset: 230, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 3.6);
+      tl.fromTo("#loop", { strokeDasharray: 240, strokeDashoffset: 240, opacity: 0 }, { strokeDashoffset: 0, opacity: 1, duration: 0.5, ease: "power2.inOut" }, 3.6);
       tl.fromTo("#looplbl", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 3.7);
       tl.to("#fail", { opacity: 0, duration: 0.15 }, 4.1);
       lightUp("#a3", 4.15, 0.6); tl.fromTo("#pass", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.25, ease: "back.out(1.6)" }, 4.35);
