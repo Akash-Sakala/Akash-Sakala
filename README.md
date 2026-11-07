@@ -39,43 +39,29 @@ I train, fine-tune and ship models: LLM post-training and distillation, speech r
 
 <sub>`React` `Node.js` `FastAPI` `MongoDB` `scikit-learn` `NumPy circuit simulator` `YOLOv8` `RAG`</sub>
 
-<table>
-<tr>
-<td width="50%" valign="top">
+<br />
+
 <a href="https://github.com/Akash-Sakala/ai-podcast-clipper"><img src="assets/clipper.webp" width="100%" alt="AI Podcast Clipper: transcribe, rank moments, render 9:16 clips" /></a>
+
+**[AI Podcast Clipper](https://github.com/Akash-Sakala/ai-podcast-clipper)**: paste a YouTube link and get ranked 9:16 Shorts. The crop follows whoever is speaking, and subtitles are timed to each word. It's a local-first fork of [ai-podcast-clipper-saas](https://github.com/Andreaswt/ai-podcast-clipper-saas) that I rebuilt around Parakeet transcription, Gemini ranking and one GPU per clip. A 37-minute podcast becomes 5 ranked clips in about 7 minutes, for roughly $0.12 of GPU time.
+
+<sub>`Python` `Modal` `Parakeet` `Gemini` `LR-ASD` `Next.js`</sub>
+
 <br />
-<b><a href="https://github.com/Akash-Sakala/ai-podcast-clipper">AI Podcast Clipper</a></b>: paste a YouTube link and get ranked 9:16 Shorts. The crop follows whoever is speaking, and subtitles are timed to each word. It's a local-first fork of <a href="https://github.com/Andreaswt/ai-podcast-clipper-saas">ai-podcast-clipper-saas</a> that I rebuilt around Parakeet transcription, Gemini ranking and one GPU per clip.
-<br /><sub><code>Python</code> <code>Modal</code> <code>Parakeet</code> <code>Gemini</code> <code>Next.js</code></sub>
-</td>
-<td width="50%" valign="top">
+
 <a href="https://github.com/Akash-Sakala/audio-cnn"><img src="assets/audiocnn.webp" width="100%" alt="Audio CNN: spectrogram, ResNet-34 feature maps, predictions" /></a>
+
+**[Audio CNN](https://github.com/Akash-Sakala/audio-cnn)**: a ResNet-34 for 50 environmental sounds. ImageNet transfer, SpecAugment and EMA took accuracy from 83.0% to 91.3%, and a GPU-resident pipeline cut training from 48 to 2.2 minutes. It runs offline on a CPU, with a dashboard of 37 layer-by-layer feature maps. [🤗 Model on Hugging Face](https://huggingface.co/Akash-Sakala/audio-cnn-resnet34-esc50)
+
+<sub>`PyTorch` `Modal` `FastAPI` `Next.js`</sub>
+
 <br />
-<b><a href="https://github.com/Akash-Sakala/audio-cnn">Audio CNN</a></b>: a ResNet-34 for 50 environmental sounds. ImageNet transfer, SpecAugment and EMA took accuracy from 83.0% to 91.3%, and a GPU-resident pipeline cut training from 48 to 2.2 minutes. It runs offline on a CPU, with a dashboard of 37 layer-by-layer feature maps.
-<br /><sub><code>PyTorch</code> <code>Modal</code> <code>FastAPI</code> <code>Next.js</code> · <a href="https://huggingface.co/Akash-Sakala/audio-cnn-resnet34-esc50">🤗 model</a></sub>
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
+
 <a href="https://github.com/Akash-Sakala/Kriya-AI"><img src="assets/kriya.webp" width="100%" alt="Kriya AI: five agents plan, design, code, test and debug an app" /></a>
-<br />
-<b><a href="https://github.com/Akash-Sakala/Kriya-AI">Kriya AI</a></b>: a CLI where five LangGraph agents turn a prompt into a working app. A tester and a debugger repair failures in a loop. It falls back to another model on errors, uses sandboxed tools, and can resume after a crash.
-<br /><sub><code>LangGraph</code> <code>Groq</code> <code>Pydantic</code> <code>SQLite</code></sub>
-</td>
-<td width="50%" valign="top">
 
-### 🤗 Model lab
+**[Kriya AI](https://github.com/Akash-Sakala/Kriya-AI)**: a CLI where five LangGraph agents turn a prompt into a working app. A tester and a debugger repair failures in a loop. It falls back to another model on errors, uses sandboxed tools, and can resume after a crash.
 
-Ten models and two datasets on [Hugging Face](https://huggingface.co/Akash-Sakala), mostly about **making models smaller without losing quality**:
-
-- **LLM distillation**: [gpt-oss-120b](https://huggingface.co/Akash-Sakala/gpt-oss-120b-transcript-formatter-lora) → [20b](https://huggingface.co/Akash-Sakala/gpt-oss-20b-transcript-formatter-lora) → [Qwen3.5-4B](https://huggingface.co/Akash-Sakala/qwen3.5-4b-transcript-formatter-lora), 99.4% vs the teacher's 99.9%
-- **Speech**: [Whisper-small LoRA](https://huggingface.co/Akash-Sakala/whisper-small-emotion) (WER 9.16% → 4.51%) and a [Whisper-large-v3 QLoRA](https://huggingface.co/Akash-Sakala/whisper-large-v3-svarah-indic) on Indian-accented English
-- **Distil, then quantize**: [BERT → DistilBERT → 4-bit](https://huggingface.co/Akash-Sakala/bert-phishing-classifier_student_4bit), 4× smaller and more accurate than the teacher
-
-<sub>[See the family trees ↓](#-model-lab-on-hugging-face)</sub>
-
-</td>
-</tr>
-</table>
+<sub>`LangGraph` `Groq` `Pydantic` `SQLite`</sub>
 
 ## Journey
 
@@ -151,7 +137,7 @@ flowchart LR
 <img height="160" src="./profile/stats.svg" alt="GitHub stats" />
 <img height="160" src="./profile/top-langs.svg" alt="Top languages" />
 <br />
-<img height="160" src="https://streak-stats.demolab.com/?user=Akash-Sakala&hide_border=true&background=0D1117&stroke=30363D&ring=58A6FF&fire=58A6FF&currStreakLabel=58A6FF&sideLabels=C9D1D9&dates=8B949E&currStreakNum=C9D1D9&sideNums=C9D1D9&dayLabels=8B949E&excludeDaysLabel=8B949E" alt="GitHub streak" />
+<img height="160" src="./profile/streak.svg" alt="GitHub contribution streak" />
 <a href="https://leetcode.com/u/Akash_SS/"><img height="160" src="https://leetcard.jacoblin.cool/Akash_SS?theme=dark&font=Fira%20Code" alt="LeetCode stats" /></a>
 
 </div>
