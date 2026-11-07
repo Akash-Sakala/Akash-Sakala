@@ -48,6 +48,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
 
+      - name: Streak card (self-generated)
+        env:
+          GITHUB_TOKEN: ${{ secrets.STATS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: python3 .github/scripts/streak.py ${{ github.repository_owner }} profile/streak.svg
+
       - name: Commit & push
         run: |
           git config user.name "github-actions[bot]"
