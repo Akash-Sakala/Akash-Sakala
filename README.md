@@ -99,16 +99,18 @@ Ten models and two datasets on [Hugging Face](https://huggingface.co/Akash-Sakal
 
 ## 🤗 Model lab on Hugging Face
 
+**Transcript formatting at Voibe:** a 120B teacher distilled down to a 4B student.
+
 ```mermaid
 flowchart LR
-    subgraph ASR["🎙️ Transcript formatting · Voibe"]
-        direction LR
-        T["gpt-oss-120b<br/>teacher · SFT + RLVR<br/>99.9%"] -- distill --> M["gpt-oss-20b<br/>student"] -- cross-tokenizer<br/>distill --> S["Qwen3.5-4B<br/>INT4 · 1 GPU<br/>99.4% ✨"]
-    end
-    subgraph PH["🎣 Phishing URL classifier"]
-        direction LR
-        B["BERT-base<br/>438 MB · 89.7%"] -- KD --> D["DistilBERT<br/>211 MB · 96.0%"] -- NF4 --> Q["4-bit student<br/>110 MB · 95.8% ✨"]
-    end
+    T["gpt-oss-120b<br/>teacher · SFT + RLVR<br/>99.9%"] -- distill --> M["gpt-oss-20b<br/>student"] -- cross-tokenizer<br/>distill --> S["Qwen3.5-4B<br/>INT4 · 1 GPU<br/>99.4% ✨"]
+```
+
+**Phishing URL classifier:** distil, then quantize.
+
+```mermaid
+flowchart LR
+    B["BERT-base<br/>438 MB · 89.7%"] -- KD --> D["DistilBERT<br/>211 MB · 96.0%"] -- NF4 --> Q["4-bit student<br/>110 MB · 95.8% ✨"]
 ```
 
 | Model | Task | Highlight |
