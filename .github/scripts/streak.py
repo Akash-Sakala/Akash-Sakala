@@ -71,7 +71,7 @@ def fmt(x):
     return x.strftime("%b %-d, %Y") if x.year != today.year else x.strftime("%b %-d")
 
 
-cur_label = f"{fmt(cur_start)} – {fmt(cur_end)}" if cur else "start one today"
+cur_label = (fmt(cur_end) if cur == 1 else f"{fmt(cur_start)} – {fmt(cur_end)}") if cur else "start one today"
 best_label = f"{fmt(best_span[0])} – {fmt(best_span[1])}" if best else "—"
 total_label = f"{fmt(first)} – Present"
 
