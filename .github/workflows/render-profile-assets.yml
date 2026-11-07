@@ -1,0 +1,46 @@
+# Renders the README animations (hero, project cards, journey) from the
+# HyperFrames compositions in profile-src/ and commits them to assets/.
+# Edit an index.html in profile-src/, push, and the WebP files rebuild.
+
+name: Render Profile Animations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "profile-src/**"
+      - ".github/workflows/render-profile-assets.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-profile-assets
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install FFmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Render with HyperFrames
+        run: bash profile-src/build.sh
+
+      - name: Commit assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/*.webp
+          git commit -m "chore: render profile animations" || exit 0
+          git pull --rebase
+          git push
