@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=800, height=560" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Mona Display"; src: url("assets/fonts/MonaSansDisplay-ExtraBold.woff2") format("woff2"); font-weight: 800; }
+      @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-SemiBold.woff2") format("woff2"); font-weight: 600; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 800px; height: 560px; overflow: hidden; background: #0a0e14; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Mona Sans", sans-serif; color: #e6edf3; }
+      #bg { position: absolute; inset: 0; background:
+          radial-gradient(420px 300px at 420px 300px, rgba(57,197,207,0.16), transparent 70%),
+          radial-gradient(360px 240px at 700px 520px, rgba(31,111,235,0.14), transparent 70%),
+          radial-gradient(1px 1px at 12px 12px, rgba(139,148,158,0.16) 1px, transparent 1.5px) 0 0 / 24px 24px, #0a0e14; }
+      #frame { position: absolute; inset: 12px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
+      .eyebrow { position: absolute; left: 40px; top: 34px; font-family: "IBM Plex Mono", monospace; font-size: 15px; letter-spacing: 0.12em; color: #56d4dd; }
+      #title { position: absolute; left: 40px; top: 58px; font-family: "Mona Display", sans-serif; font-size: 46px; letter-spacing: -0.02em; line-height: 1; }
+      #sub { position: absolute; left: 40px; top: 116px; font-size: 19px; color: #c9d1d9; }
+      .cap { position: absolute; font-family: "IBM Plex Mono", monospace; font-size: 14px; color: #9198a1; }
+      #specbox { position: absolute; left: 40px; top: 172px; width: 230px; height: 212px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(240,246,252,0.14); background: #05070b; }
+      #spec { width: 230px; height: 212px; display: block; }
+      #net { position: absolute; left: 292px; top: 172px; width: 236px; height: 212px; }
+      .stage { position: absolute; top: 0; width: 46px; height: 212px; }
+      .blk { position: absolute; left: 4px; width: 38px; border-radius: 5px; border: 1px solid rgba(86,212,221,0.35); background: rgba(86,212,221,0.06); }
+      .fm { position: absolute; left: 3px; width: 40px; height: 40px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(240,246,252,0.2); }
+      .fm canvas { width: 40px; height: 40px; display: block; }
+      #preds { position: absolute; left: 552px; top: 172px; width: 208px; }
+      .pr { position: absolute; left: 0; width: 208px; }
+      .pr .nm { font-family: "IBM Plex Mono", monospace; font-size: 15.5px; color: #9198a1; }
+      .pr .tr { margin-top: 5px; height: 8px; border-radius: 4px; background: rgba(240,246,252,0.08); overflow: hidden; }
+      .pr .fl { height: 8px; border-radius: 4px; background: #3d6b73; transform-origin: 0 50%; }
+      #preds .nm { opacity: 0; }
+      #gB { opacity: 0; }
+      .fm { opacity: 0.25; }
+      .pr.top .nm { color: #e6edf3; font-weight: 600; }
+      .pr.top .fl { background: linear-gradient(90deg, #39c5cf, #58a6ff); }
+      #metric { position: absolute; left: 40px; top: 420px; display: flex; align-items: baseline; gap: 14px; }
+      #metric .big { font-family: "Mona Display", sans-serif; font-size: 44px; color: #56d4dd; letter-spacing: -0.02em; }
+      #metric .c { font-size: 18px; color: #c9d1d9; line-height: 1.3; }
+      #metric .c b { color: #fff; font-weight: 600; }
+      #stack { position: absolute; left: 40px; top: 498px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="800" data-height="560">
+      <div id="stage" class="clip" data-start="0" data-duration="8" data-track-index="0" style="position:absolute;inset:0" data-layout-allow-overlap data-layout-allow-overflow>
+        <div id="bg"></div>
+        <div id="frame"></div>
+        <div class="eyebrow">03 · AUDIO ML</div>
+        <div id="title">Audio CNN</div>
+        <div id="sub">A ResNet-34 that listens to 50 everyday sounds</div>
+        <div class="cap" style="left:40px;top:148px">log-mel spectrogram</div>
+        <div class="cap" style="left:292px;top:148px">ResNet-34 · feature maps</div>
+        <div class="cap" style="left:552px;top:148px">top predictions</div>
+        <div id="specbox"><canvas id="spec" width="230" height="212"></canvas></div>
+        <div id="net"></div>
+        <div id="preds">
+          <div class="grp" id="gA">
+            <div class="pr top" style="top:0"><div class="nm">dog</div><div class="tr"><div class="fl a"></div></div></div>
+            <div class="pr" style="top:52px"><div class="nm">rooster</div><div class="tr"><div class="fl a"></div></div></div>
+            <div class="pr" style="top:104px"><div class="nm">crow</div><div class="tr"><div class="fl a"></div></div></div>
+            <div class="pr" style="top:156px"><div class="nm">siren</div><div class="tr"><div class="fl a"></div></div></div>
+          </div>
+          <div class="grp" id="gB">
+            <div class="pr top" style="top:0"><div class="nm">rain</div><div class="tr"><div class="fl b"></div></div></div>
+            <div class="pr" style="top:52px"><div class="nm">sea_waves</div><div class="tr"><div class="fl b"></div></div></div>
+            <div class="pr" style="top:104px"><div class="nm">crackling_fire</div><div class="tr"><div class="fl b"></div></div></div>
+            <div class="pr" style="top:156px"><div class="nm">wind</div><div class="tr"><div class="fl b"></div></div></div>
+          </div>
+        </div>
+        <div id="metric"><div class="big">91.3% ± 1.3</div><div class="c">accuracy on ESC-50 (5-fold CV)<br />human listeners score <b>81.3%</b></div></div>
+        <div id="stack">PyTorch · Modal A10G (2.2-min training) · FastAPI · Next.js</div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const SPEED = 30, P = 8 * SPEED; // columns per second; pattern repeats every 8 s
+        const h32 = (x) => { x |= 0; x = Math.imul(x ^ (x >>> 16), 0x45d9f3b); x = Math.imul(x ^ (x >>> 16), 0x45d9f3b); return ((x ^ (x >>> 16)) >>> 0) / 4294967296; };
+        const cv = document.getElementById("spec"), ctx = cv.getContext("2d");
+        const W = 230, H = 212, CW = 2, ROWS = 53, RH = H / ROWS;
+        function energy(col, row) {
+          const cc = col - 115, c = ((cc % P) + P) % P, sec = c / SPEED, f = 1 - row / ROWS; // f: 0 low .. 1 high
+          let e;
+          if (sec < 4) { // dog: harmonic bark bursts
+            const ph = (sec % 0.9) / 0.9, burst = ph < 0.28 ? Math.sin(Math.PI * ph / 0.28) : 0;
+            let harm = 0; for (let k = 1; k <= 6; k++) harm += Math.exp(-Math.pow((f - 0.08 * k - 0.02 * Math.sin(ph * 6)) / 0.018, 2)) / k;
+            e = burst * (0.35 + 1.4 * harm) + 0.08 * h32(col * 131 + row);
+          } else { // rain: broadband noise, more energy up high
+            e = (0.25 + 0.45 * f) * (0.4 + 0.6 * h32(col * 977 + row * 13)) + 0.25 * (h32(col * 7 + 3) > 0.92 ? 1 : 0);
+          }
+          return Math.min(1, e);
+        }
+        function color(v) { // dark -> teal -> blue -> pale
+          const r = Math.round(10 + 120 * Math.max(0, v - 0.6) * 2.5), g = Math.round(14 + 200 * v), b = Math.round(24 + 210 * Math.min(1, v * 1.3));
+          return `rgb(${r},${g},${b})`;
+        }
+        function drawSpec(t) {
+          const off = t * SPEED;
+          const base = Math.floor(off), frac = off - base;
+          ctx.fillStyle = "#05070b"; ctx.fillRect(0, 0, W, H);
+          for (let x = 0; x <= W / CW + 1; x++) {
+            const col = base + x;
+            for (let r = 0; r < ROWS; r++) { ctx.fillStyle = color(energy(col, r)); ctx.fillRect((x - frac) * CW, r * RH, CW + 0.5, RH + 0.5); }
+          }
+        }
+        // ResNet-34 stages: 3, 4, 6, 3 blocks
+        const net = document.getElementById("net"), CNT = [3, 4, 6, 3], CH = [64, 128, 256, 512];
+        const fms = [];
+        CNT.forEach((n, si) => {
+          const st = document.createElement("div"); st.className = "stage"; st.style.left = si * 62 + "px"; net.appendChild(st);
+          const bh = (150 - (n - 1) * 4) / n;
+          for (let b = 0; b < n; b++) { const d = document.createElement("div"); d.className = "blk s" + si; d.style.top = b * (bh + 4) + "px"; d.style.height = bh + "px"; st.appendChild(d); }
+          const fm = document.createElement("div"); fm.className = "fm f" + si; fm.style.top = "160px";
+          const c = document.createElement("canvas"); c.width = 40; c.height = 40; fm.appendChild(c); st.appendChild(fm); fms.push(c.getContext("2d"));
+          const lb = document.createElement("div"); lb.className = "cap"; lb.style.cssText = "left:2px;top:204px;font-size:12px;opacity:0"; lb.textContent = CH[si]; st.appendChild(lb);
+        });
+        function drawFM(t) { // feature maps: coarser and more abstract each stage, driven by the current sound
+          const off = Math.floor(t * SPEED);
+          fms.forEach((g, si) => {
+            const cells = [16, 10, 6, 4][si], s = 40 / cells;
+            for (let y = 0; y < cells; y++) for (let x = 0; x < cells; x++) {
+              let v = 0; const span = 4 << si;
+              for (let k = 0; k < 3; k++) v += energy(off + Math.floor(x * span / cells * 3) + k, Math.floor(y * 53 / cells));
+              v = Math.min(1, v / 3 * (1.1 + 0.25 * si));
+              const hue = 190 - 160 * v;
+              g.fillStyle = `hsl(${hue},80%,${12 + 48 * v}%)`; g.fillRect(x * s, y * s, s + 0.5, s + 0.5);
+            }
+          });
+        }
+        const tl = gsap.timeline({ paused: true });
+        const clock = { t: 0 };
+        tl.fromTo(clock, { t: 0 }, { t: 8, duration: 8, ease: "none", onUpdate: () => { drawSpec(clock.t); drawFM(clock.t); } }, 0);
+        const ON = { backgroundColor: "rgba(86,212,221,0.55)", borderColor: "rgba(160,240,245,0.9)" }, OFF = { backgroundColor: "rgba(86,212,221,0.06)", borderColor: "rgba(86,212,221,0.35)" };
+        tl.set(".fl", { scaleX: 0 }, 0);
+        [[0, "A", [0.86, 0.06, 0.04, 0.02]], [4, "B", [0.71, 0.14, 0.09, 0.03]]].forEach(([t0, k, vals], gi) => {
+          if (gi > 0) tl.set("#g" + k, { opacity: 1 }, t0);
+          CNT.forEach((n, si) => {
+            const ts = t0 + 0.35 + si * 0.3;
+            tl.fromTo(".s" + si, OFF, { ...ON, duration: 0.25, ease: "expo.out", stagger: 0.04, immediateRender: false }, ts);
+            tl.to(".s" + si, { ...OFF, duration: 0.6, ease: "power2.inOut" }, ts + 0.7);
+            tl.fromTo(".f" + si, { opacity: 0.25 }, { opacity: 1, duration: 0.3, ease: "power2.out", immediateRender: false }, ts + 0.1);
+            tl.to(".f" + si, { opacity: 0.25, duration: 0.3, ease: "power2.in" }, t0 + 3.55);
+            tl.fromTo("#net .stage:nth-child(" + (si + 1) + ") .cap", { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, ts + 0.1);
+            tl.to("#net .stage:nth-child(" + (si + 1) + ") .cap", { opacity: 0, duration: 0.2 }, t0 + 3.55);
+          });
+          document.querySelectorAll(".fl." + k.toLowerCase()).forEach((el, i) => {
+            tl.fromTo(el, { scaleX: 0 }, { scaleX: vals[i], duration: 0.6, ease: "expo.out", immediateRender: false }, t0 + 1.75 + i * 0.07);
+            tl.to(el, { scaleX: 0, duration: 0.3, ease: "power2.in" }, t0 + 3.6);
+          });
+          tl.fromTo("#g" + k + " .nm", { opacity: 0 }, { opacity: 1, duration: 0.25, stagger: 0.05, immediateRender: false }, t0 + 1.7);
+          tl.to("#g" + k + " .nm", { opacity: 0, duration: 0.2, ease: "power2.in" }, t0 + 3.7);
+          tl.set("#g" + k, { opacity: 0 }, t0 + 3.98);
+        });
+        drawSpec(0); drawFM(0);
+        window.__timelines["main"] = tl;
+        tl.seek(0);
+      })();
+    </script>
+  </body>
+</html>
