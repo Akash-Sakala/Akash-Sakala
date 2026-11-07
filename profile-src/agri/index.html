@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=540" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Mona Display"; src: url("assets/fonts/MonaSansDisplay-ExtraBold.woff2") format("woff2"); font-weight: 800; }
+      @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-Medium.woff2") format("woff2"); font-weight: 500; }
+      @font-face { font-family: "Mona Sans"; src: url("assets/fonts/MonaSans-SemiBold.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "Noto Kannada"; src: url("assets/fonts/NotoSans-kannada.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "Noto Telugu"; src: url("assets/fonts/NotoSans-telugu.woff2") format("woff2"); font-weight: 600; }
+      @font-face { font-family: "Noto Deva"; src: url("assets/fonts/NotoSans-devanagari.woff2") format("woff2"); font-weight: 600; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1280px; height: 540px; overflow: hidden; background: #0a0e14; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Mona Sans", sans-serif; color: #e6edf3; }
+      #bg { position: absolute; inset: 0; background:
+          radial-gradient(560px 360px at 900px 280px, rgba(46,160,67,0.20), transparent 70%),
+          radial-gradient(420px 300px at 180px 480px, rgba(31,111,235,0.16), transparent 70%),
+          radial-gradient(1px 1px at 12px 12px, rgba(139,148,158,0.16) 1px, transparent 1.5px) 0 0 / 24px 24px, #0a0e14; }
+      #frame { position: absolute; inset: 14px; border: 1px solid rgba(240,246,252,0.08); border-radius: 18px; }
+      #left { position: absolute; left: 48px; top: 46px; width: 470px; }
+      .eyebrow { font-family: "IBM Plex Mono", monospace; font-size: 14px; letter-spacing: 0.12em; color: #7ee787; }
+      #title { margin-top: 10px; font-family: "Mona Display", sans-serif; font-size: 56px; letter-spacing: -0.02em; line-height: 1; }
+      #tag { margin-top: 12px; font-size: 22px; color: #c9d1d9; line-height: 1.3; }
+      #langrow { margin-top: 14px; display: flex; align-items: center; gap: 10px; font-family: "IBM Plex Mono", monospace; font-size: 14.5px; color: #9198a1; }
+      #lang { position: relative; width: 116px; height: 34px; border-radius: 999px; border: 1px solid rgba(126,231,135,0.45); background: rgba(46,160,67,0.14); overflow: hidden; }
+      .lg { position: absolute; left: 0; right: 0; top: 0; height: 34px; line-height: 34px; text-align: center; font-size: 17px; color: #aff5b4; font-weight: 600; }
+      #feats { margin-top: 18px; display: flex; flex-direction: column; gap: 5px; }
+      .ft { display: flex; align-items: center; gap: 12px; padding: 6px 12px; border-radius: 12px; border: 1px solid transparent; font-size: 18.5px; color: #8b949e; }
+      .ft .ic { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: rgba(240,246,252,0.06); font-size: 17px; }
+      .ft b { font-weight: 600; }
+      #metric { position: absolute; left: 48px; top: 452px; display: flex; align-items: baseline; gap: 14px; }
+      #metric .big { font-family: "Mona Display", sans-serif; font-size: 44px; color: #7ee787; letter-spacing: -0.02em; }
+      #metric .cap { font-size: 16px; color: #8b949e; line-height: 1.3; width: 300px; }
+      #desk { position: absolute; left: 560px; top: 58px; width: 680px; height: 409px; border-radius: 14px; overflow: hidden; border: 1px solid rgba(240,246,252,0.16); background: #161b22; box-shadow: 0 30px 60px rgba(0,0,0,0.45); }
+      #desk .bar { height: 26px; display: flex; align-items: center; gap: 7px; padding-left: 12px; background: #1c2129; }
+      #desk .bar i { width: 10px; height: 10px; border-radius: 50%; background: #3d444d; display: block; }
+      #desk .bar span { margin-left: 14px; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: #9198a1; }
+      #screen { position: absolute; left: 0; top: 26px; width: 680px; height: 383px; }
+      #screen img { position: absolute; inset: 0; width: 680px; height: 383px; }
+      #ripple { position: absolute; left: 0; top: 0; width: 680px; height: 383px; }
+      #phone { position: absolute; left: 1040px; top: 196px; width: 196px; height: 330px; border-radius: 24px; padding: 6px; background: #0d1117; border: 1px solid rgba(240,246,252,0.22); box-shadow: 0 24px 48px rgba(0,0,0,0.55); }
+      #pscreen { position: relative; width: 184px; height: 318px; border-radius: 18px; overflow: hidden; }
+      #pscreen img { position: absolute; left: 0; top: 0; width: 184px; height: 326px; }
+      #prog { position: absolute; left: 48px; top: 436px; width: 470px; height: 3px; border-radius: 3px; background: rgba(240,246,252,0.08); overflow: hidden; }
+      #progbar { width: 470px; height: 3px; background: #7ee787; transform-origin: 0 50%; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="8" data-width="1280" data-height="540">
+      <div id="stage" class="clip" data-start="0" data-duration="8" data-track-index="0" style="position:absolute;inset:0" data-layout-allow-overlap>
+        <div id="bg"></div>
+        <div id="frame"></div>
+        <div id="left">
+          <div class="eyebrow">01 · FLAGSHIP · BUILT SOLO</div>
+          <div id="title">AgriQNet 2.0</div>
+          <div id="tag">A farm assistant for Karnataka's farmers</div>
+          <div id="langrow">
+            <div id="lang" data-layout-allow-overflow>
+              <div class="lg" id="lg0">English</div>
+              <div class="lg" id="lg1" style="font-family:'Noto Deva'">हिंदी</div>
+              <div class="lg" id="lg2" style="font-family:'Noto Kannada'">ಕನ್ನಡ</div>
+              <div class="lg" id="lg3" style="font-family:'Noto Telugu'">తెలుగు</div>
+            </div>
+            <span>4 languages · 7 services · 1 command</span>
+          </div>
+          <div id="feats">
+            <div class="ft" id="ft0"><div class="ic">🌾</div><span><b>Crop &amp; fertilizer</b> · quantum-hybrid ML</span></div>
+            <div class="ft" id="ft1"><div class="ic">🐛</div><span><b>Pest photo</b> → YOLOv8 → SMS alerts</span></div>
+            <div class="ft" id="ft2"><div class="ic">📚</div><span><b>Farmer Library</b> · RAG with page citations</span></div>
+            <div class="ft" id="ft3"><div class="ic">🌦</div><span><b>Weather</b> · 16-day farm alerts</span></div>
+          </div>
+        </div>
+        <div id="prog"><div id="progbar"></div></div>
+        <div id="metric"><div class="big">+29 pts</div><div class="cap">macro-F1 from quantum features (SVM, 64 training farms)</div></div>
+        <div id="desk">
+          <div class="bar"><i></i><i></i><i></i><span data-layout-ignore>agriqnet · localhost:3000</span></div>
+          <div id="screen">
+            <img id="d0" src="assets/img/d_home.jpg" alt="" />
+            <img id="d1" src="assets/img/d_map.jpg" alt="" />
+            <img id="d2" src="assets/img/d_library.jpg" alt="" />
+            <img id="d3" src="assets/img/d_weather.jpg" alt="" />
+            <svg id="ripple" viewBox="0 0 680 383">
+              <circle class="rp" cx="380" cy="280" r="10" fill="none" stroke="#f85149" stroke-width="3" />
+              <circle class="rp" cx="380" cy="280" r="10" fill="none" stroke="#f0883e" stroke-width="3" />
+              <circle class="rp" cx="380" cy="280" r="10" fill="none" stroke="#f0883e" stroke-width="2" />
+            </svg>
+          </div>
+        </div>
+        <div id="phone"><div id="pscreen" data-layout-allow-overflow>
+          <img id="p0" src="assets/img/p_crop.jpg" alt="" />
+          <img id="p1" src="assets/img/p_pest.jpg" alt="" />
+          <img id="p2" src="assets/img/p_kannada.jpg" alt="" />
+          <img id="p3" src="assets/img/p_weather.jpg" alt="" />
+        </div></div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const SEG = 2, N = 4;
+      const ON = { color: "#e6edf3", borderColor: "rgba(126,231,135,0.35)", backgroundColor: "rgba(46,160,67,0.10)" };
+      const OFF = { color: "#8b949e", borderColor: "rgba(126,231,135,0)", backgroundColor: "rgba(46,160,67,0)" };
+      // initial state: segment 0 visible
+      for (let i = 0; i < N; i++) {
+        tl.set(["#d" + i, "#p" + i], { opacity: i === 0 ? 1 : 0, filter: "blur(0px)" }, 0);
+        tl.set("#ft" + i, i === 0 ? ON : OFF, 0);
+        tl.set("#lg" + i, { yPercent: i === 0 ? 0 : 100, opacity: i === 0 ? 1 : 0 }, 0);
+      }
+      // segment changes at 2, 4, 6 and 8 (8 wraps to 0 so the loop is seamless)
+      for (let k = 1; k <= N; k++) {
+        const t = k * SEG - 0.22, prev = (k - 1) % N, next = k % N;
+        tl.to(["#d" + prev, "#p" + prev], { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, t);
+        tl.fromTo(["#d" + next, "#p" + next], { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, t + 0.06);
+        tl.to("#ft" + prev, { ...OFF, duration: 0.25, ease: "power2.inOut" }, t);
+        tl.to("#ft" + next, { ...ON, duration: 0.3, ease: "power2.out" }, t + 0.05);
+        tl.to("#lg" + prev, { yPercent: -100, opacity: 0, duration: 0.22, ease: "power3.in" }, t);
+        tl.fromTo("#lg" + next, { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, t + 0.1);
+      }
+      // progress bar per segment
+      for (let k = 0; k < N; k++) tl.fromTo("#progbar", { scaleX: 0 }, { scaleX: 1, duration: SEG, ease: "none", immediateRender: false }, k * SEG);
+      // pest alert spreading from Bengaluru Urban to neighbouring districts (segment 1)
+      gsap.utils.toArray(".rp").forEach((c, i) => {
+        const t0 = 2.15 + i * 0.32;
+        tl.set(c, { opacity: 0, attr: { r: 8 } }, 0);
+        tl.fromTo(c, { attr: { r: 8 } }, { attr: { r: 70 + i * 22 }, duration: 1.1, ease: "power2.out", immediateRender: false }, t0);
+        tl.fromTo(c, { opacity: 0 }, { opacity: 0.95, duration: 0.15, ease: "power2.out", immediateRender: false }, t0);
+        tl.to(c, { opacity: 0, duration: 0.6, ease: "power2.in" }, t0 + 0.5);
+      });
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
