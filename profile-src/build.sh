@@ -46,7 +46,7 @@ render() {
 
 render hero 1280
 render agri 1280
-render clipper 800
-render audiocnn 800
-render kriya 800
+render clipper 1280
+render audiocnn 1280
+render kriya 1280
 render timeline 1280
